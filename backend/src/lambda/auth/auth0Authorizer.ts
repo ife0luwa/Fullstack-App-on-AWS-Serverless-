@@ -55,7 +55,7 @@ export const handler = async (
 }
 
 async function verifyToken(authHeader: string): Promise<JwtPayload> {
-  logger.info('verifying token')
+  logger.info('verifying token', authHeader.substring(0, 20))
   const token = getToken(authHeader)
   const jwt: Jwt = decode(token, { complete: true }) as Jwt
 
@@ -75,7 +75,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
   //{signingKeys.x5c[0]}
 
   //convert pen to cert
-  const cert = '-----BEGIN CERTIFICATE-----\n${signingKeys.x5c[0]}\n-----END CERTIFICATE-----'
+  const cert = `-----BEGIN CERTIFICATE-----\n${signingKeys.x5c[0]}\n-----END CERTIFICATE-----`
 
   //verify token
   const verifiedToken = verify(token, cert, { algorithms: ['RS256']}) as JwtPayload
